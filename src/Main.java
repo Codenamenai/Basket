@@ -6,7 +6,7 @@ public class Main {
             basket = Basket.loadFromTxtFile(basket.getFile());
             basket.printCart();
         } else {
-            basket.addToCart(1, 3);
+            basket.addToCart(1, 2);
             basket.saveTxt(basket.getFile());
             basket.addToCart(2, 1);
             basket.saveTxt(basket.getFile());

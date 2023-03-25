@@ -12,9 +12,9 @@ public class Basket {
         this.price = new int[]{50, 200, 80};
         this.basket = new int[products.length];
     }
-    public Basket(String[] products, int[] prices, int[] basket) {
+    public Basket(String[] products, int[] price, int[] basket) {
         this.products = products;
-        this.price = prices;
+        this.price = price;
         this.basket = basket;
     }
     public void addToCart(int productNum, int amount) {
