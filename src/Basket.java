@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Basket {
     public String products[];
     protected int price[];
-    protected File file = new File("basket.txt");
+    protected File file = new File("basket.bin");
     protected int basket[];
 
     public Basket() {
@@ -12,11 +12,13 @@ public class Basket {
         this.price = new int[]{50, 200, 80};
         this.basket = new int[products.length];
     }
+
     public Basket(String[] products, int[] price, int[] basket) {
         this.products = products;
         this.price = price;
         this.basket = basket;
     }
+
     public void addToCart(int productNum, int amount) {
         basket[productNum - 1] += amount;
     }
@@ -38,36 +40,17 @@ public class Basket {
         return file;
     }
 
-    public void saveTxt(File textFile) throws IOException {
-        try (PrintWriter writer = new PrintWriter(textFile)) {
-            for (String product : products) {
-                writer.print(product + " ");
-            }
-            writer.print("\n");
-            for (int prices : price) {
-                writer.print(prices + " ");
-            }
-            writer.print("\n");
-            for (int i : basket) {
-                writer.print(i + " ");
-            }
+    public void saveBin(File file) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+            out.writeObject(new Basket(products, price, basket));
         }
     }
 
-    public static Basket loadFromTxtFile(File textFile) throws Exception {
-        try (InputStream ins = new FileInputStream(textFile)) {
-            Scanner scanner = new Scanner(ins);
-            String[] products = scanner.nextLine().trim().split(" ");
-            String[] pricesI = scanner.nextLine().trim().split(" ");
-            int[] price = new int[pricesI.length];
-            for (int i = 0; i < pricesI.length; i++) {
-                price[i] = Integer.parseInt(pricesI[i]);
-            }
-            String[] basketI = scanner.nextLine().trim().split(" ");
-            int[] basket = new int[basketI.length];
-            for (int i = 0; i < basketI.length; i++)
-                basket[i] = Integer.parseInt(basketI[i]);
-            return new Basket(products, price, basket);
+    public static Basket loadFromBinFile(File file) throws Exception {
+        Basket basket = null;
+        try (ObjectInputStream ins = new ObjectInputStream(new FileInputStream(file))) {
+            basket = (Basket) ins.readObject();
+            return basket;
         }
     }
 
