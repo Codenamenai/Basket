@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -7,10 +10,10 @@ public class Basket {
     protected File file = new File("basket.txt");
     protected int basket[];
 
-    public Basket() {
+    public Basket(String[] products, int[] price) {
         this.products = new String[]{"Хлеб", "Масло", "Молоко"};
         this.price = new int[]{50, 200, 80};
-        this.basket = new int[products.length];
+        this.basket = new int[this.products.length];
     }
     public Basket(String[] products, int[] price, int[] basket) {
         this.products = products;
@@ -78,6 +81,32 @@ public class Basket {
             System.out.println(" Товар: " + " " + products[i] + price[i] + " рублей.");
         }
         return " ";
+    }
+    public void saveJSON(File file)  {
+        try (PrintWriter writer= new PrintWriter(file)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json =gson.toJson(this);
+            writer.print(json);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static Basket loadFromJSONFile(File file){
+        Basket basket = null;
+        try (BufferedReader reader= new BufferedReader(new FileReader(file))) {
+            StringBuilder builder = new StringBuilder();
+            String line =null;
+            while ((line=reader.readLine()) != null) {
+                builder.append(line);
+            }
+            Gson gson = new Gson();
+            basket = gson.fromJson(builder.toString(), Basket.class);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return basket;
     }
 
 
