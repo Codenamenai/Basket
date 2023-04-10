@@ -14,7 +14,7 @@ public class ClientLog {
 
     public void log(int productNum, int amount) {
 
-        log.add(new String[]{""+productNum,""+amount});
+        log.add(new String[]{String.valueOf(productNum+1),String.valueOf(amount)});
 
     }
 
