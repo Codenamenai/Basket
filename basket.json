@@ -9,12 +9,9 @@
     200,
     80
   ],
-  "file": {
-    "path": "basket.txt"
-  },
-  "basket": [
-    4,
+  "quantities": [
     2,
-    13
+    3,
+    0
   ]
 }

@@ -9,26 +9,26 @@ import java.util.List;
 
 public class ClientLog {
 
-    private List<String[]> prodNumAmountList = new ArrayList<>();
+    private List<String[]>log = new ArrayList<>();
 
 
     public void log(int productNum, int amount) {
 
-        prodNumAmountList.add(new String[]{String.valueOf(productNum), String.valueOf(amount)});
+        log.add(new String[]{""+productNum,""+amount});
 
     }
 
     public void exportAsCSV(File txtFile) {
-        prodNumAmountList.add(0, new String[]{"productNum" + " " + "amount"});
+        if (!txtFile.exists()){
+            log.add(0,new String[] {"productNum,amount"});
+        }
+
         try (CSVWriter writer = new CSVWriter(new FileWriter(txtFile, true))) {
-            writer.writeAll(prodNumAmountList);
+            writer.writeAll(log);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<String[]> getProdNumAmountList() {
-        return prodNumAmountList;
-    }
 }
 
